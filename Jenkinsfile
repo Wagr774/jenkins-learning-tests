@@ -20,6 +20,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
+                # Запуск тестов через pytest из виртуального окружения
+                # Флаг --alluredir=allure-results создаст папку с результатами
                 sh './venv/bin/pytest tests/test_api.py --alluredir=allure-results'
             }
         }
@@ -27,7 +29,7 @@ pipeline {
 
     post {
         always {
-            echo "Build process finished"
+            echo "Build process finished!"
         }
     }
 }
