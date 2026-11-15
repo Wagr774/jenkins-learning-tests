@@ -20,8 +20,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                # Запуск тестов через pytest из виртуального окружения
-                # Флаг --alluredir=allure-results создаст папку с результатами
+                # Запускаем тесты и собираем результаты в папку allure-results
                 sh './venv/bin/pytest tests/test_api.py --alluredir=allure-results'
             }
         }
@@ -29,7 +28,9 @@ pipeline {
 
     post {
         always {
-            echo "Build process finished!"
+            // Эта команда — "магия" плагина Allure.
+            // Она сама найдет папку allure-results и создаст отчет.
+            allure includeResults = 'allure-results'
         }
     }
 }
