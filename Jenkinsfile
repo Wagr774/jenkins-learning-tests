@@ -20,7 +20,6 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                # Запускаем тесты и собираем результаты в папку allure-results
                 sh './venv/bin/pytest tests/test_api.py --alluredir=allure-results'
             }
         }
@@ -28,8 +27,6 @@ pipeline {
 
     post {
         always {
-            // Эта команда — "магия" плагина Allure.
-            // Она сама найдет папку allure-results и создаст отчет.
             allure includeResults = 'allure-results'
         }
     }
