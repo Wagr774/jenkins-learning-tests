@@ -10,24 +10,28 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // Устанавливаем зависимости прямо в контейнер Jenkins
-                sh 'pip install -r requirements.txt'
+                # 1. Создаем виртуальное окружение
+                # 2. Устанавливаем зависимости именно в него
+                sh '''
+                    python3 -m venv venv
+                    ./venv/bin/pip install --upgrade pip
+                    ./venv/bin/pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Запускаем тесты и генерируем папку allure-results
-                sh 'pytest tests/test_api.py --alluredir=allure-results'
+                // Запускаем pytest, указывая полный путь к исполняемому файлу в venv
+                sh './venv/bin/pytest tests/test_api.py --alluredir=allure-results'
             }
         }
     }
 
     post {
         always {
-            // Генерируем отчет Allure в папку allure-report
-            // Если плагин Allure установлен, Jenkins сам подхватит эту папку
-            sh 'allure generate allure-results --out allure-report'
+            // Генерируем отчет, тоже вызывая allure из нашего venv
+            sh './venv/bin/allure generate allure-results --out allure-report'
         }
     }
 }
