@@ -29,7 +29,7 @@ pipeline {
         always {
             // Мы используем 'allure' напрямую. 
             // Если он не найден в venv, попробуем просто вызвать его.
-            sh echo "Tests finished" || echo "Allure generate failed, but tests passed!"'
+            sh echo "Tests finished" || echo "Allure generate failed, but tests passed!"
         }
     }
 
