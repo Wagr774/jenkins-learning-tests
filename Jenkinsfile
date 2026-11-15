@@ -27,7 +27,8 @@ pipeline {
 
     post {
         always {
-            sh 'allure generate allure-results --out allure-report'
+         
+            sh './venv/bin/allure generate allure-results --out allure-report'
             echo "Build process finished"
         }
     }
